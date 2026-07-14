@@ -15,7 +15,6 @@ RUN apk add --no-cache \
     && docker-php-ext-install \
         pdo_mysql \
         mbstring \
-        exif \
         pcntl \
         bcmath \
         gd \
