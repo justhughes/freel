@@ -1,0 +1,6 @@
+@extends('layouts.app')
+@section('title','Kelola Freelancer')
+@section('content')
+<h1>Freelancer & Kuota Bidang</h1><div class="grid">@foreach($categories as $category)<div class="card"><h3>{{ $category->name }}</h3><p>Terisi {{ $category->approved_freelancer_skills_count }} / {{ $category->freelancer_quota ?: 'tanpa batas' }}</p><form method="POST" action="{{ route('admin.categories.quota',$category) }}">@csrf @method('PATCH')<input type="number" name="freelancer_quota" min="0" value="{{ $category->freelancer_quota }}"><button>Simpan Kuota</button></form></div>@endforeach</div>
+<div class="card"><div class="table-wrap"><table><thead><tr><th>Nama</th><th>Status</th><th>Pengalaman</th><th>Keahlian</th><th></th></tr></thead><tbody>@forelse($freelancers as $freelancer)<tr><td>{{ $freelancer->name }}<br><small>{{ $freelancer->email }}</small></td><td>{{ $freelancer->account_status }}</td><td>{{ $freelancer->freelancerProfile?->experience_years }} tahun</td><td>@foreach($freelancer->freelancerSkills as $skill)<span class="badge">{{ $skill->category->name }}: {{ $skill->status }}</span> @endforeach</td><td><a href="{{ route('admin.freelancers.show',$freelancer) }}">Detail</a></td></tr>@empty<tr><td colspan="5">Belum ada freelancer.</td></tr>@endforelse</tbody></table></div></div>
+@endsection

@@ -1,0 +1,5 @@
+@extends('layouts.app')
+@section('title','Log Pembayaran')
+@section('content')
+<h1>Log Transaksi Pembayaran</h1><p>Admin tidak memverifikasi pembayaran normal secara manual. Halaman ini untuk monitoring dan penanganan masalah.</p><div class="table-wrap card"><table><thead><tr><th>Kode</th><th>Order</th><th>Klien</th><th>Metode</th><th>Channel</th><th>Nominal</th><th>Status</th><th>Aksi</th></tr></thead><tbody>@foreach($payments as $payment)<tr><td>{{ $payment->payment_code }}</td><td>{{ $payment->order->order_code }}</td><td>{{ $payment->order->client->name }}</td><td>{{ $payment->method->name }}</td><td>{{ $payment->channel->name }}</td><td>Rp{{ number_format($payment->amount,0,',','.') }}</td><td>{{ $payment->status }}</td><td>@if($payment->status==='pending')<form method="POST" action="{{ route('admin.payments.problem',$payment) }}">@csrf<input name="reason" placeholder="Alasan" required><button class="danger">Tandai Problem</button></form>@endif</td></tr>@endforeach</tbody></table></div>
+@endsection

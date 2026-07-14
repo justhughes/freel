@@ -1,0 +1,13 @@
+@extends('layouts.app')
+@section('title','Buat Pesanan')
+@section('content')
+<div class="card" style="max-width:850px;margin:auto"><h1>Buat Pesanan</h1>
+<form method="POST" action="{{ route('client.orders.store') }}" enctype="multipart/form-data">@csrf
+<label>Paket</label><select name="service_package_id" required><option value="">Pilih paket</option>@foreach($packages as $package)<option value="{{ $package->id }}" @selected(old('service_package_id',$selectedPackage?->id)==$package->id)>{{ $package->category->name }} — {{ $package->name }} — Rp{{ number_format($package->base_price,0,',','.') }}</option>@endforeach</select>
+<div class="grid"><div><label>Judul Pesanan</label><input name="title" value="{{ old('title') }}" required></div><div><label>Nama Bisnis / Brand</label><input name="business_name" value="{{ old('business_name') }}" required></div><div><label>Jumlah</label><input type="number" name="quantity" min="1" max="100" value="{{ old('quantity',1) }}" required></div><div><label>Platform</label><input name="platform" value="{{ old('platform') }}" placeholder="Instagram/TikTok"></div><div><label>Ukuran Konten</label><input name="content_size" value="{{ old('content_size') }}" placeholder="Feed 1:1 / Story 9:16"></div><div><label>Kecepatan</label><select name="speed_type"><option value="regular">Reguler</option><option value="fast">Cepat</option><option value="express">Kilat</option></select></div><div><label>Tanggal Mulai</label><input type="date" name="booking_date" min="{{ now()->toDateString() }}" value="{{ old('booking_date',now()->addDay()->toDateString()) }}" required></div></div>
+<label>Deskripsi Produk</label><textarea name="product_description" required>{{ old('product_description') }}</textarea><label>Target Pelanggan</label><textarea name="target_audience">{{ old('target_audience') }}</textarea><label>Referensi Estetika / Warna Brand</label><input name="visual_reference" value="{{ old('visual_reference') }}" placeholder="Warm tones, earthy, minimalis"><label>Catatan Tambahan</label><textarea name="brief">{{ old('brief') }}</textarea>
+<label>Aset Mentah (maksimal 10 file)</label><input type="file" name="assets[]" multiple>
+<div class="grid"><div><label>Kode Voucher</label><input name="voucher_code" value="{{ old('voucher_code') }}"></div><div><label>Metode Pembayaran</label><select name="payment_channel_id" required><option value="">Pilih channel</option>@foreach($channels->groupBy(fn($c)=>$c->method->name) as $method=>$items)<optgroup label="{{ $method }}">@foreach($items as $channel)<option value="{{ $channel->id }}">{{ $channel->name }}</option>@endforeach</optgroup>@endforeach</select></div></div>
+<br><button>Buat Pesanan</button>
+</form></div>
+@endsection

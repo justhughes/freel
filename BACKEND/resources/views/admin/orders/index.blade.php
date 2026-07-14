@@ -1,0 +1,5 @@
+@extends('layouts.app')
+@section('title','Semua Pesanan')
+@section('content')
+<h1>Monitoring Pesanan</h1><form method="GET" class="card"><label>Filter Status</label><select name="status"><option value="">Semua</option>@foreach(['pending_payment','queue','process','review','revision_requested','revision','done','cancelled','problem'] as $status)<option value="{{ $status }}" @selected(request('status')===$status)>{{ $status }}</option>@endforeach</select><button>Filter</button></form><div class="table-wrap card"><table><thead><tr><th>Kode</th><th>Klien</th><th>Paket</th><th>Freelancer</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>@foreach($orders as $order)<tr><td>{{ $order->order_code }}</td><td>{{ $order->client->name }}</td><td>{{ $order->package->name }}</td><td>{{ $order->freelancer?->name??'-' }}</td><td>Rp{{ number_format($order->total_amount,0,',','.') }}</td><td>{{ $order->status_label }}</td><td><a href="{{ route('admin.orders.show',$order) }}">Detail</a></td></tr>@endforeach</tbody></table></div>
+@endsection

@@ -1,0 +1,6 @@
+@extends('layouts.app')
+@section('title','Detail Freelancer')
+@section('content')
+<h1>{{ $freelancer->name }}</h1><div class="grid"><div class="card"><p>{{ $freelancer->email }}</p><p>{{ $freelancer->phone }}</p><p>Status akun: {{ $freelancer->account_status }}</p><p>Pengalaman: {{ $freelancer->freelancerProfile?->experience_years }} tahun</p><p>{{ $freelancer->freelancerProfile?->bio }}</p>@if($freelancer->freelancerProfile?->portfolio_url)<a target="_blank" href="{{ $freelancer->freelancerProfile->portfolio_url }}">Lihat Portofolio</a>@endif</div><div class="card"><h3>Keahlian</h3>@foreach($freelancer->freelancerSkills as $skill)<details open><summary>{{ $skill->category->name }} — {{ $skill->status }}</summary><div class="actions" style="margin-top:10px"><form method="POST" action="{{ route('admin.freelancer-skills.approve',$skill) }}">@csrf<button class="success">Terima</button></form><form method="POST" action="{{ route('admin.freelancer-skills.reject',$skill) }}">@csrf<input name="reason" placeholder="Alasan penolakan" required><button class="danger">Tolak</button></form></div></details>@endforeach</div></div>
+<form method="POST" action="{{ route('admin.freelancers.status',$freelancer) }}">@csrf @method('PATCH')<button class="warning">Ubah Status Akun</button></form>
+@endsection

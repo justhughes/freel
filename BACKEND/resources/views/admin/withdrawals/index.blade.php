@@ -1,0 +1,5 @@
+@extends('layouts.app')
+@section('title','Kelola Withdraw')
+@section('content')
+<h1>Permintaan Withdraw</h1>@foreach($withdrawals as $item)<div class="card"><div class="row"><div><h3>{{ $item->withdrawal_code }}</h3><p>{{ $item->freelancer->name }} • {{ $item->destination_provider }} {{ $item->destination_account_number }} a.n. {{ $item->destination_account_holder }} ({{ $item->destination_type }})</p></div><div class="price">Rp{{ number_format($item->amount,0,',','.') }}</div><span class="badge">{{ $item->status }}</span></div>@if(in_array($item->status,['pending','approved']))<div class="actions"><form method="POST" action="{{ route('admin.withdrawals.approve',$item) }}">@csrf<button class="success">Setujui</button></form><form method="POST" action="{{ route('admin.withdrawals.paid',$item) }}" enctype="multipart/form-data">@csrf<input type="file" name="proof"><button>Sudah Dibayar</button></form><form method="POST" action="{{ route('admin.withdrawals.reject',$item) }}">@csrf<input name="reason" placeholder="Alasan penolakan" required><button class="danger">Tolak</button></form></div>@endif</div>@endforeach
+@endsection
