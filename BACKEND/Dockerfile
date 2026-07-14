@@ -29,6 +29,9 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . .
 
+# Pastikan .env ada (akan di-overwrite oleh entrypoint saat runtime)
+RUN cp .env.example .env
+
 # Install dependencies (no dev)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
