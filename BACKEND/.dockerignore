@@ -15,4 +15,3 @@ tests
 phpunit.xml
 .editorconfig
 .gitattributes
-docker
