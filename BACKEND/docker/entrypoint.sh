@@ -36,12 +36,14 @@ fi
     echo "MAIL_MAILER=log"
 } > /var/www/html/.env
 
-# ─── Step 2: Tunggu MySQL siap ───────────────────────────────
-echo "==> Waiting for MySQL..."
-until mysqladmin ping -h "${DB_HOST:-db}" -u "${DB_USERNAME:-contify_user}" -p"${DB_PASSWORD:-contify_pass_2024}" --silent 2>/dev/null; do
-    echo "    MySQL not ready yet, waiting 3 seconds..."
-    sleep 3
+# ─── Step 2: Tunggu MySQL siap (TCP check) ───────────────────
+echo "==> Waiting for MySQL on ${DB_HOST:-db}:${DB_PORT:-3306}..."
+until nc -z "${DB_HOST:-db}" "${DB_PORT:-3306}" 2>/dev/null; do
+    echo "    MySQL not ready yet, waiting 2 seconds..."
+    sleep 2
 done
+# Tunggu 2 detik ekstra agar MySQL selesai inisialisasi user/db
+sleep 2
 echo "MySQL is ready!"
 
 # ─── Step 3: Generate APP_KEY jika belum ada ─────────────────

@@ -11,7 +11,7 @@ RUN apk add --no-cache \
     libpng-dev \
     libzip-dev \
     oniguruma-dev \
-    mysql-client \
+    netcat-openbsd \
     && docker-php-ext-install \
         pdo_mysql \
         mbstring \
