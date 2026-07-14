@@ -40,6 +40,9 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
+# Buat direktori yang dibutuhkan supervisor & nginx di Alpine
+RUN mkdir -p /var/log/supervisor /var/log/nginx /run/nginx
+
 # Copy Nginx config
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/nginx-site.conf /etc/nginx/http.d/default.conf
